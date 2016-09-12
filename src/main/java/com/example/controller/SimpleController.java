@@ -5,6 +5,7 @@ import com.example.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class SimpleController {
     }
 
     @RequestMapping("/getUser")
+    @ResponseBody
     public User getUser()
     {
         User user = new User();
@@ -38,8 +40,18 @@ public class SimpleController {
     public String saveUser()
     {
         User user = new User();
-        user.setName("kk");
+        user.setName("zhangsan2");
         userService.save(user);
-        return "Save user success!";
+        return "user";
+    }
+
+    @RequestMapping("/getUserById")
+    public  String getUserById()
+    {
+        User loaded = userService.findById(1);
+        System.out.println("loaded=" + loaded);
+        User cached = userService.findById(1);
+        System.out.println("cached=" + cached);
+        return "user";
     }
 }
