@@ -1,10 +1,18 @@
 package com.example.controller;
 
+import com.example.bean.MyBlogInfo;
+import com.example.bean.MyUser;
+import com.example.bean.Party;
 import com.example.bean.User;
+import com.example.dao.MyBlogInfoDao;
+import com.example.dao.MyUserDao;
+import com.example.dao.PartyDao;
 import com.example.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -18,6 +26,14 @@ import java.util.Map;
 public class SimpleController {
     @Resource
     private UserService userService;
+    @Autowired
+    private MyUserDao myUserDao;
+
+    @Autowired
+    private MyBlogInfoDao myBlogInfoDao;
+
+    @Autowired
+    private PartyDao partyDao;
 
     @RequestMapping(value = "/hello" , method = RequestMethod.GET)
     public String hello(Map<String, Object> map)
@@ -53,5 +69,65 @@ public class SimpleController {
         User cached = userService.findById(1);
         System.out.println("cached=" + cached);
         return "user";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login()
+    {
+        return "login";
+    }
+
+    @RequestMapping("/findUserById")
+    @ResponseBody
+    public MyUser findUserById(@RequestParam(value = "id") Integer id)
+    {
+        MyUser user = myUserDao.findUserById(id);
+        return user;
+    }
+
+
+    @RequestMapping(value = "/insertUser")
+    @ResponseBody
+    public String insertUser(@RequestParam(value = "name") String name)
+    {
+        MyUser user = new MyUser();
+        user.setName(name);
+        myUserDao.insertUser(user);
+        return "success!";
+    }
+
+    @RequestMapping(value = "/updateUser")
+    @ResponseBody
+    public String updateUser(@RequestParam(value = "id") int id)
+    {
+        MyUser user = new MyUser();
+        user.setId(id);
+        user.setName("zhangfeng");
+        myUserDao.updateUser(user);
+        return "success!";
+    }
+
+    @RequestMapping(value = "/deleteUser")
+    @ResponseBody
+    public String deleteUser(@RequestParam(value = "id") int id)
+    {
+        myUserDao.deleteUser(id);
+        return "success!";
+    }
+
+    @RequestMapping(value = "/queryAllBlogInfo")
+    @ResponseBody
+    public String queryAllBlogInfo(@RequestParam(value = "id") int id)
+    {
+        MyBlogInfo myBlogInfo = myBlogInfoDao.queryAllBlogInfo(id);
+        return "success!";
+    }
+
+    @RequestMapping(value = "/getChildrenPartys")
+    @ResponseBody
+    public String getChildrenPartys(@RequestParam(value = "id") int id)
+    {
+        Party party = partyDao.getChildrenPartys(id);
+        return "success!";
     }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.MyBlogInfoMapper">
+    <resultMap id="MyBlogInfo" type="com.example.bean.MyBlogInfo">
+        <id column="id" property="blogId"/>
+        <result column="title" property="title"/>
+        <association property="myUser" column="user_id" javaType="com.example.bean.MyUser">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+        </association>
+        <collection property="myPostList" column="blog_id" ofType="com.example.bean.MyPost" javaType="list">
+            <id column="post_id" property="id"/>
+            <result column="body" property="body"/>
+            <result column="blog_id" property="blogId"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryAllBlogInfo" resultMap="MyBlogInfo">
+        SELECT
+            b.id,
+            b.title,
+            b.user_id,
+            u.id,
+            u.name,
+            p.id AS post_id,
+            p.body,
+            p.blog_id
+        FROM myblog b
+        LEFT OUTER JOIN myuser u ON b.user_id = u.id
+        LEFT OUTER JOIN mypost p ON p.blog_id = b.id
+        WHERE b.id = #{id}
+    </select>
+
+    <!--<select id="queryAllBlogInfo1" resultMap="MyBlogInfo">-->
+        <!--SELECT-->
+        <!--b.id AS  blog_id,-->
+        <!--b.title,-->
+        <!--b.user_id AS blog_user_id,-->
+        <!--u.id,-->
+        <!--u.name,-->
+        <!--p.id,-->
+        <!--p.body,-->
+        <!--p.blog_id AS post_blog_id-->
+        <!--FROM myblog b-->
+        <!--LEFT OUTER JOIN myuser u ON b.user_id = u.id-->
+        <!--LEFT OUTER JOIN mypost p ON p.blog_id = b.id-->
+        <!--WHERE b.id = #{id}-->
+    <!--</select>-->
+</mapper>
