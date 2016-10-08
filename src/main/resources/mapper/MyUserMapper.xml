@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.MyUserMapper">
+    <resultMap id="result" type="com.example.bean.MyUser">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="findUserById" resultMap="result">
+        SELECT * FROM myuser WHERE id=#{id}
+    </select>
+
+    <!--mysql id自动生成策略, 数据库主键需设为自增属性-->
+    <insert id="insertUser" parameterType="com.example.bean.MyUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO myuser (name) VALUES (#{name})
+    </insert>
+
+    <update id="updateUser" parameterType="com.example.bean.MyUser">
+        UPDATE myuser SET
+            name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM myuser WHERE id = #{id}
+    </delete>
+
+
+</mapper>

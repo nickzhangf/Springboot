@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.PartyMapper">
+    <resultMap id="party" type="com.example.bean.Party">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="childrenPartyList" column="id" select="getChildrenPartys1" javaType="java.util.ArrayList"/>
+    </resultMap>
+
+    <select id="getChildrenPartys" parameterType="int" resultMap="party">
+        SELECT * FROM party WHERE id = #{id}
+    </select>
+
+    <select id="getChildrenPartys1" parameterType="int" resultMap="party">
+        SELECT * FROM party WHERE p_id = #{id}
+    </select>
+</mapper>
