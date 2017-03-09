@@ -9,10 +9,10 @@ package com.example.rabbitmq;
  * @version 1.0
  * @date 2017/3/9
  */
-//@Component
-//@RabbitListener(queues = "ch1")
+@Component
+@RabbitListener(queues = "ch1")
 public class Receiver {
-//    @RabbitHandler
+    @RabbitHandler
     public void process(String ch1) {
         System.out.println("Receiver: " + ch1);
     }
