@@ -24,6 +24,6 @@ public class Sender {
     {
         String context = "hello " + new Date();
         System.out.println("Sender: " + context);
-        rabbitTemplate.convertAndSend("ch1", context);
+        rabbitTemplate.convertAndSend("ch1", 1);
     }
 }
